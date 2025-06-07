@@ -2,98 +2,34 @@ import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
 import { getEnvVar } from './utils/getEnvVar.js';
-import { getAllContacts, getContactById } from './services/contacts.js';
+import { contactsRouter } from './routers/contacts.js';
+import { notFoundHandler } from './middlewares/notFoundHandler.js';
+import { errorHandler } from './middlewares/errorHandler.js';
 
 const PORT = Number(getEnvVar('PORT', '3000'));
 
 export const setupServer = async () => {
-    const app = express();
-    app.use(express.json());
-    app.use(cors());
-    app.use(
-        pino({
-            transport: {
-                target: 'pino-pretty',
-
-            },
-        }),
-    );
-    app.get('/', (req, res) => {
-        res.json({message: "All work" });
-    });
-
-        app.get('/contacts', async (req, res) => {
-        try {
-        const contacts = await getAllContacts();
-        res.status(200).json({
- status: 200,
-  message: "Successfully found contacts!",
-  data: contacts,
-        });
-        } catch (error) {
-            console.error(error);
-            }
-        });
-
-    app.get('/contacts/:contactId', async (req, res, next) => {
-        try {
-            const { contactId } = req.params;
-        const contact = await getContactById(contactId);
-
-            if (!contact) {
-                res.status(404).json({
-                    message: 'Contact not found'
-                });
-                    return;
-            }
-
-            res.status(200).json({
-                status: 200,
-                message: `Successfully found contact with id ${contactId}!`,
-                data:
-                    contact,
-            });
-        } catch (error) {
-      console.error(error);
-    }
-    });
-    //Обробку неіснуючих роутів (повертає статус 404 і відповідне повідомлення)
-    app.use((req, res, next) => {
-    res.status(404).json({
-        message: 'Not found',
-    });
-    });
-
-    app.use((err, req, res, next) => {
-        res.status(500).json({
-            message: 'Something went wrong',
-            error: err.message,
-        });
-    });
-        app.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}`);
-        });
+  const app = express();
+  app.use(express.json());
+  app.use(cors());
+  app.use(
+    pino({
+      transport: {
+        target: 'pino-pretty',
+      },
+    }),
+  );
+  app.get('/', (req, res) => {
+    res.json({ message: 'All work' });
+  });
+  app.use('/contacts', contactsRouter);
+  app.use(notFoundHandler);
+  app.use(errorHandler);
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
 };
 
 
-// import express from 'express';
-// import cors from 'cors';
-// import pino from 'pino-http';
 
-// export function setupServer() {
-//   const app = express();
 
-//   app.use(cors());
-//   app.use(pino());
-
-//   // неіснуючі маршрути
-//   app.use((req, res) => {
-//     res.status(404).json({ message: 'Not found' });
-//   });
-
-//   const PORT = process.env.PORT || 3000;
-
-//   app.listen(PORT, () => {
-//     console.log(`Server is running on port ${PORT}`);
-//   });
-// }
