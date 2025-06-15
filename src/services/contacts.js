@@ -9,12 +9,13 @@ export const getAllContacts = async ({
   sortOrder = SORT_ORDER.ASC,
     sortBy = '_id',
   filter = {},
+  userId,
 }) => {
 
     const limit = perPage;
     const skip = (page - 1) * perPage;
 
-    const contactsQuery = ContactsCollection.find();
+    const contactsQuery = ContactsCollection.find({userId});
     // if (filter.isFavourite) {
     //     contactsQuery.where('isFavourite').equals(filter.isFavourite);
     // }
@@ -40,8 +41,8 @@ export const getAllContacts = async ({
         ...paginationData,
     };
 };
-export const getContactById = async (contactId) => {
-    const contact = await ContactsCollection.findById(contactId);
+export const getContactById = async (contactId, userId) => {
+    const contact = await ContactsCollection.findOne({ _id: contactId, userId });
     return contact;
 };
 
@@ -50,20 +51,20 @@ export const createContact = async (contactData) => {
   return newContact;
 };
 
-export const updateContact = async (contactId, updateData) => {
-  const updatedContact = await ContactsCollection.findByIdAndUpdate(
-    contactId,
+export const updateContact = async (contactId, updateData, userId ) => {
+  const updatedContact = await ContactsCollection.findOneAndUpdate({ _id: contactId, userId },
     updateData,
     { new: true }
   );
+
   if (!updatedContact) {
     throw createError(404, 'Contact not found... 😑');
   }
   return updatedContact;
 };
 
-export const deleteContact = async (contactId) => {
-  const deletedContact = await ContactsCollection.findByIdAndDelete(contactId);
+export const deleteContact = async (contactId, userId) => {
+  const deletedContact = await ContactsCollection.findOneAndDelete({ _id: contactId, userId });
   if (!deletedContact) {
     throw createError(404, 'Contact not found... 😑');
   }
