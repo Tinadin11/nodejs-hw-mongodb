@@ -11,7 +11,6 @@ const PORT = Number(getEnvVar('PORT', '3000'));
 
 export const setupServer = async () => {
   const app = express();
-
   app.use(express.json());
   app.use(cors());
   app.use(
@@ -24,7 +23,7 @@ export const setupServer = async () => {
   app.use(cookieParser());
 
   // Основні API маршрути
-  app.use('/api', router);
+  app.use(router);
 
   //  базовий маршрут
   app.get('/', (req, res) => {
@@ -39,7 +38,6 @@ export const setupServer = async () => {
     console.log(`Server is running on port ${PORT}`);
   });
 };
-
 
 // app.get('/', (req, res) => {
 //     res.json({ message: 'All work' });
