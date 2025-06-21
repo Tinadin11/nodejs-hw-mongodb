@@ -39,10 +39,6 @@ export const setupServer = async () => {
   });
 };
 
-// app.get('/', (req, res) => {
-//     res.json({ message: 'All work' });
-//   });
-//   app.use('/contacts', contactsRouter);
 
 
 

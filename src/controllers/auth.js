@@ -1,9 +1,12 @@
 import {
-    registerUser,
-    loginUser,
-    logoutUser,
-    refreshUsersSession
+  registerUser,
+  loginUser,
+  logoutUser,
+  refreshUsersSession,
+  requestResetToken,
+  resetPassword
 } from "../services/auth.js";
+
 import { ONE_DAY } from "../constants/index.js";
 
 // реєструюсь
@@ -52,14 +55,15 @@ export const logoutUserController = async (req, res) => {
 
 // доп.кукіси
 const setupSession = (res, session) => {
+
   res.cookie('refreshToken', session.refreshToken, {
-    httpOnly: true,
-    expires: new Date(Date.now() + ONE_DAY),
+  httpOnly: true,
+  expires: new Date(Date.now() + ONE_DAY),
   });
 
   res.cookie('sessionId', session._id, {
-    httpOnly: true,
-    expires: new Date(Date.now() + ONE_DAY),
+  httpOnly: true,
+  expires: new Date(Date.now() + ONE_DAY),
   });
 };
 
@@ -70,11 +74,34 @@ export const refreshUserSessionController = async (req, res) => {
     refreshToken: req.cookies.refreshToken,
   });
     setupSession(res, session);
-    res.json({
-    status: 200,
-    message: 'Successfully refreshed a session!',
-    data: {
+
+  res.json({
+  status: 200,
+  message: 'Successfully refreshed a session!',
+  data: {
             accessToken: session.accessToken,
         },
+    });
+};
+
+//лист для скидання паролю
+export const requestResetEmailController = async (req, res) => {
+await requestResetToken(req.body.email);
+
+  res.json({
+  status: 200,
+  message: "Reset password email was successfully sent!",
+  data: {},
+    });
+};
+
+//скидую пароль
+export const resetPasswordController = async (req, res) => {
+  await resetPassword(req.body);
+
+  res.json({
+  status: 200,
+  message: 'Password was successfully reset!',
+  data: {},
     });
 };
