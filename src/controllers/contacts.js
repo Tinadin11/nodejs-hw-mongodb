@@ -88,7 +88,7 @@ export const patchContactController = async (req, res, next) => {
     if (photoUrl) {
       updateData.photo = photoUrl;
     }
-    const result = await updateContact(contactId, updateData);
+    const result = await updateContact(contactId, updateData, req.user.id);
     if (!result) {
         next(createHttpError(404, 'Contact not found'));
         return;
