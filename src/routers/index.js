@@ -3,7 +3,7 @@ import contactsRouter from "./contacts.js";
 import authRouter from './auth.js';
 import express from 'express';
 import { UPLOAD_DIR } from '../constants/index.js';
-import { swaggerDocs } from '../midllewares/swaggerDocs.js';
+import { swaggerDocs } from '../middlewares/swaggerDocs.js';
 
 const router = Router();
 router.use('/contacts', contactsRouter);

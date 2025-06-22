@@ -21,7 +21,7 @@ parameters:
     schema:
       type: string
       example: _id
-      description: All contact's fields can be mentioned. Default value - _id
+      description: All contact fields are allowed. Default value is _id
   - in: query
     name: sortOrder
     schema:
@@ -93,6 +93,6 @@ responses:
   '401':
     $ref: '../../components/responses/401.yaml'
   '404':
-    $ref: '../../components/responses/401.yaml'
+    $ref: '../../components/responses/404.yaml'
   '500':
     $ref: '../../components/responses/500.yaml'

@@ -20,7 +20,7 @@ properties:
   password:
     description: User's password
     type: string
-    example: Qwerty12345
+    # example: Qwerty12345
   createdAt:
     description: User's creation date
     type: string

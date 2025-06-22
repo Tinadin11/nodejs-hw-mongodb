@@ -3,7 +3,8 @@ tags:
 summary: Logout user
 operationId: logoutUser
 description: logout user
-security: []
+security:
+  - bearerAuth: []
 responses:
   '204':
     description: User logout
@@ -11,3 +12,4 @@ responses:
     $ref: ../../components/responses/404.yaml
   '500':
     $ref: ../../components/responses/500.yaml
+

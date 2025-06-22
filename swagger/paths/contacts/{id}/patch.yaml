@@ -4,7 +4,7 @@ summary: Update a contact by ID
 operationId: updateContact
 description: Updates information about contact by ID
 security:
-  - bearerAuth: []
+- bearerAuth: []
 parameters:
   - name: id
     in: path
@@ -44,7 +44,7 @@ requestBody:
             description: Link to contact's photo
             type: string
             format: binary
-            example: https://res.cloudinary.com/dkfw5jlaz/image/upload/v1750528648/vljwc0mnxg6kkv98fesl.jpg
+            # example: https://res.cloudinary.com/dkfw5jlaz/image/upload/v1750528648/vljwc0mnxg6kkv98fesl.jpg
             default: null
 responses:
   '200':
