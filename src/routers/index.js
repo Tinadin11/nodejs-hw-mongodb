@@ -9,6 +9,11 @@ const router = Router();
 router.use('/contacts', contactsRouter);
 router.use('/auth', authRouter);
 router.use('/uploads', express.static(UPLOAD_DIR));
-router.use('/api-docs', swaggerDocs());
+// Розпаковуємо масив middleware
+router.use('/api-docs', ...swaggerDocs());
+
 export default router;
+
+
+// router.use('/api-docs', swaggerDocs());
 
